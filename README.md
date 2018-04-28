@@ -9,7 +9,7 @@ function initializeState(actions) {
     {
       counter: 0
     },
-    [() => Promise.resolve(actions.inc()), () => Promise.resolve(actions.log())]
+    [() => Promise.resolve(actions.inc())]
   ];
 }
 
@@ -20,6 +20,7 @@ function update(msg, state, actions) {
       return [
         { ...state, counter: nextCounter },
         [
+          () => Promise.resolve(actions.log()),
           state =>
             new Promise((resolve, reject) => {
               setTimeout(
@@ -31,8 +32,7 @@ function update(msg, state, actions) {
                   ),
                 1000
               );
-            }),
-          () => Promise.resolve(actions.log())
+            })
         ]
       ];
 
