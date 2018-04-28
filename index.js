@@ -36,7 +36,7 @@ function app(actions, initializeState, update, inspector) {
     current_command = command_queue.shift();
 
     try {
-      current_command()
+      current_command(state)
         .then(() => {
           current_command = null;
           run_next_command_in_queue();
