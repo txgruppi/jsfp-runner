@@ -1,3 +1,5 @@
+module.exports = app;
+
 function isFunction(v) {
   return typeof v === 'function';
 }
