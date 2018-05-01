@@ -40,9 +40,5 @@ function update(msg, state, actions) {
   return state;
 }
 
-function inspector(lifeCycleEvent, state, commands, msg) {
-  debug && console.log(lifeCycleEvent, state, commands, msg);
-}
-
-app(actions, initializeState, update, inspector);
+app(actions, initializeState, update, app.logger);
 ```
