@@ -1,4 +1,5 @@
 module.exports = app;
+module.exports.logger = logger;
 
 function isFunction(v) {
   return typeof v === 'function';
@@ -58,4 +59,8 @@ function app(actions, initializeState, update, inspector) {
     isFunction(inspector) && inspector('update', state, command_queue, null);
     run_next_command_in_queue();
   }
+}
+
+function logger(lcevent, state, commands, msg) {
+  console.log(lcevent, state, commands, msg);
 }
