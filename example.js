@@ -8,7 +8,7 @@ function initializeState(actions) {
     {
       counter: 0
     },
-    [() => Promise.resolve(actions.inc())]
+    [async () => actions.inc()]
   ];
 }
 
@@ -19,24 +19,17 @@ function update(msg, state, actions) {
       return [
         { ...state, counter: nextCounter },
         [
-          () => Promise.resolve(actions.log()),
-          state =>
-            new Promise((resolve, reject) => {
-              setTimeout(
-                () =>
-                  resolve(
-                    state.counter >= 10
-                      ? Promise.resolve(actions.reset())
-                      : Promise.resolve(actions.inc())
-                  ),
-                1000
-              );
-            })
+          async () => actions.log(),
+          async state =>
+            setTimeout(
+              () => (state.counter >= 10 ? actions.reset() : actions.inc()),
+              1000
+            )
         ]
       ];
 
     case actions.reset_type:
-      return [{ ...state, counter: 0 }, [() => Promise.resolve(actions.inc())]];
+      return [{ ...state, counter: 0 }, [async () => actions.inc()]];
 
     case actions.log_type:
       console.log('Counter', state.counter);
