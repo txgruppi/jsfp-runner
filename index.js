@@ -45,13 +45,13 @@ function app(actions, initializeState, update, inspector) {
         })
         .catch(e => {
           isFunction(inspector) &&
-            inspector('create', state, command_queue, null, e);
+            inspector('error', state, command_queue, null, e);
           current_command = null;
           run_next_command_in_queue();
         });
     } catch (e) {
       isFunction(inspector) &&
-        inspector('create', state, command_queue, null, e);
+        inspector('error', state, command_queue, null, e);
       current_command = null;
       run_next_command_in_queue();
     }
