@@ -43,7 +43,9 @@ function app(actions, initializeState, update, inspector) {
           current_command = null;
           run_next_command_in_queue();
         })
-        .catch(() => {
+        .catch(e => {
+          isFunction(inspector) &&
+            inspector('create', state, command_queue, null, e);
           current_command = null;
           run_next_command_in_queue();
         });
