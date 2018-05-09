@@ -19,7 +19,8 @@ function app(actions, initializeState, update, inspector) {
   const mappedActions = createActions(actions, dispatch);
   let [state, commands] = initializeState(mappedActions);
   queue_commands(commands);
-  isFunction(inspector) && inspector('create', state, command_queue, null);
+  isFunction(inspector) &&
+    inspector('create', state, command_queue, null, null);
   run_next_command_in_queue();
   return mappedActions;
 
@@ -47,20 +48,24 @@ function app(actions, initializeState, update, inspector) {
           run_next_command_in_queue();
         });
     } catch (e) {
+      isFunction(inspector) &&
+        inspector('create', state, command_queue, null, e);
       current_command = null;
       run_next_command_in_queue();
     }
   }
 
   function dispatch(msg) {
-    isFunction(inspector) && inspector('dispatch', state, command_queue, msg);
+    isFunction(inspector) &&
+      inspector('dispatch', state, command_queue, msg, null);
     [state, commands] = update(msg, state, mappedActions);
     queue_commands(commands);
-    isFunction(inspector) && inspector('update', state, command_queue, null);
+    isFunction(inspector) &&
+      inspector('update', state, command_queue, null, null);
     run_next_command_in_queue();
   }
 }
 
-function logger(lcevent, state, commands, msg) {
-  console.log(lcevent, state, commands, msg);
+function logger(lcevent, state, commands, msg, error) {
+  console.log(lcevent, state, commands, msg, error);
 }
